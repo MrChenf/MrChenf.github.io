@@ -10,10 +10,6 @@
                 padding: 0;
                 border: none;
             }
-            html,body{
-                height: 100%;
-            }
-            /* 延迟加载的css */
             #photo{
                 width: 900px;
                 background-color: red;
@@ -146,10 +142,61 @@
                  color: white;
 
              }
+             html{
+                height: 100%;
+            }
+            body{
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .container{
+                width: 50%;
+                margin: 100px auto;
+            }
+            .content span{
+                font-size: 16px;
+                color: red;
+                font-weight: bolder
+            }
+            .input{
+                width: 50%;
+                border: 2.5px solid red;
+                height: 110px;
+                outline: none;
+            }
+            #yellow{
+                border: 3px orangered dotted;
+                margin-top: 20px;
+            }
+            #green{
+                border: 2px greenyellow dotted;
+            }
+            p{
+                margin:0;
+                padding: 0;
+            }
+            .span{
+                color: blue;
+            }
+            .showAnswer>div{
+                margin: 20px 0;
+
+            }
         </style>
     </head>
     <body>
-        <div style="width:80%;height:1100px;margin:0 auto;background-color:yellow;"></div>
+        <div class="container">
+            <h1>图灵机器人</h1>
+            <div class="content">
+                <span>请在下面的框中输入你要和机器人对话的内容</span>
+                <div class="input" contenteditable="true"></div>
+            </div>
+            <hr id="yellow">
+            <div class="showAnswer">
+                
+            </div>
+        </div>
         <div id="photo">
             <dl>
                 <dt><img src="imgs/wait_load.jpg" alt="" xsrc="imgs/p1.jpg" bigSrc="imgs/p1big.jpg" class="wait_load"></dt>
@@ -214,6 +261,36 @@
             </div>
         </div>
         <script>
+            var date=Date.now();
+            $(window).keydown(function(e){
+                if(e.keyCode==13){
+                    $('.ask').attr('id',date);
+                    console.log($('.ask'));
+                    xml.open("get","http://www.tuling123.com/openapi/api?key=860b5311f9534ee198059bbbb708e198&info="+$('.input').text(),true);
+                    xml.send();
+                }
+            })
+            var xml=new XMLHttpRequest();
+            xml.onreadystatechange=function(){
+                if(xml.readyState==4){
+                    var data=JSON.parse(xml.responseText);
+                    console.log(data);
+                    $('.showAnswer').append(`
+                        <div>
+                             <p><span class="span">提问:</span><span>${$('.input').text()}</span></p>
+                             <p><span class="span">回答:</span><span id="s">你也好</span><a></a></p>
+                        </div>
+                        <hr id="green">
+
+                    `)
+                    $('.input').text("");
+                    $('.showAnswer>div>p span:last').text(data.text)
+                    if(data.code==200000){
+                        $('.showAnswer>div>p span:last').text(data.text)
+                        $('a').attr('href',data.url).text('图片链接')
+                    }
+                }
+            }
             $(function(){
                 // 延迟加载图片
                 //当图片满足某些条件时,设置图片src,让图片进行加载
