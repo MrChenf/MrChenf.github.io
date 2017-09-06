@@ -183,14 +183,24 @@
                 margin: 20px 0;
 
             }
+            #fasong{
+                width: 70px;
+                height: 40px;
+                background-color:cyan;
+                border: none;
+                color: orange;
+                border-radius: 7px;
+                
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>图灵机器人</h1>
+            <h1>在线客服</h1>
             <div class="content">
-                <span>请在下面的框中输入你要和机器人对话的内容</span>
+                <span>请在下面的框中输入你要和我对话的内容</span>
                 <div class="input" contenteditable="true"></div>
+                <button id="fasong">发送</button>
             </div>
             <hr id="yellow">
             <div class="showAnswer">
@@ -198,6 +208,7 @@
             </div>
         </div>
         <div id="photo">
+            <h2>点击查看大图</h2>
             <dl>
                 <dt><img src="imgs/wait_load.jpg" alt="" xsrc="imgs/p1.jpg" bigSrc="imgs/p1big.jpg" class="wait_load"></dt>
                 <dd>延迟加载和预加载</dd>
@@ -261,14 +272,12 @@
             </div>
         </div>
         <script>
-            var date=Date.now();
-            $(window).keydown(function(e){
-                if(e.keyCode==13){
-                    $('.ask').attr('id',date);
+
+            $('#fasong').click(function(e){
                     console.log($('.ask'));
                     xml.open("get","http://www.tuling123.com/openapi/api?key=860b5311f9534ee198059bbbb708e198&info="+$('.input').text(),true);
                     xml.send();
-                }
+                
             })
             var xml=new XMLHttpRequest();
             xml.onreadystatechange=function(){
